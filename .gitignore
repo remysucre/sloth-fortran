@@ -1,0 +1,11 @@
+/dist
+/.stack-work
+/cabal.sandbox.config
+/.cabal-sandbox
+/Gemfile
+/Gemfile.lock
+/Guardfile
+/forpar
+.*.swp
+.*.swo
+*~
