@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 82865a74eccdd72b7c319d6ad48525dba412b6ba3099622394460f418d6f0dfd
+-- hash: 6fdfa08535005568f220a00c79ab233d1ed775800770bb735be29120af7e213d
 
 name:           sloth
 version:        0.1.0.0
@@ -38,6 +38,7 @@ library
     , template-haskell
     , uniplate
   exposed-modules:
+      FQQ
       Lib
   other-modules:
       Paths_sloth

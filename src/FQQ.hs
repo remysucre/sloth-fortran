@@ -1,18 +1,33 @@
 {-# Language ViewPatterns, TemplateHaskell, FlexibleContexts #-}
 
-module JQQ where
+module FQQ where
 
-import Language.Java.Parser
-import Language.Java.Syntax
+import Language.Fortran.Parser.Fortran90
+import Language.Fortran.ParserMonad
+import Language.Fortran.AST
 import Language.Haskell.TH
 import Language.Haskell.TH.Quote
 import Data.Generics (extQ)
 import Data.Generics.Uniplate.Data
 import Data.Data
+import Data.ByteString.Char8
 import Debug.Trace
-import Text.Parsec.Combinator
 import Control.Monad.State.Lazy
 import qualified Data.Set as DS
+
+fortran :: QuasiQuoter
+fortran = QuasiQuoter {
+      quoteExp = undefined
+    , quotePat  = \str ->
+        let ParseOk c _ = fortran90Parser (pack str) ""
+        in dataToPatQ (const Nothing) c
+        -- in case c of (EP e) -> dataToPatQ exts e
+        --            (SP s) -> dataToPatQ exts (evalState ((rename s) >>= reid) DS.empty)
+    , quoteType = undefined
+    , quoteDec  = undefined
+    }
+
+{-
 
 -- general java patterns. in a minimal implementation, this is the only
 -- necessary part
@@ -173,3 +188,4 @@ jprog = QuasiQuoter {
     , quoteType = undefined
     , quoteDec  = undefined
     }
+-}
