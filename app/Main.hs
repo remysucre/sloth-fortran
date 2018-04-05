@@ -15,7 +15,7 @@ main = do
   fc <- BS.readFile fn
   -- TODO update to call the right parser
   let fortran = case fortran90Parser fc fn
-                  of ParseOk pt _ -> traceShowId pt
+                  of ParseOk pt _ -> pt
                      _ -> trace fn $ ProgramFile (MetaInfo Fortran90 "") []
       res = testj fortran
       prettyPrint = \r -> pprintAndRender Fortran90 r fixedForm
