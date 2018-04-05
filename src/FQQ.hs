@@ -5,6 +5,9 @@ module FQQ where
 import Language.Fortran.Parser.Fortran90
 import Language.Fortran.ParserMonad
 import Language.Fortran.AST
+import Language.Fortran.Lexer.FreeForm
+import Language.Fortran.Util.Position
+import qualified Language.Fortran.Transformer as LFT
 import Language.Haskell.TH
 import Language.Haskell.TH.Quote
 import Data.Generics (extQ)
@@ -19,13 +22,20 @@ fortran :: QuasiQuoter
 fortran = QuasiQuoter {
       quoteExp = undefined
     , quotePat  = \str ->
-        let ParseOk c _ = fortran90Parser (pack str) ""
-        in dataToPatQ (const Nothing) c
-        -- in case c of (EP e) -> dataToPatQ exts e
-        --            (SP s) -> dataToPatQ exts (evalState ((rename s) >>= reid) DS.empty)
+        let c = case runParse blocksParser (initParseState (pack str) Fortran90 "")
+                of ParseOk r _ -> r
+                   ParseFailed e -> trace (show e) $ undefined
+        in dataToPatQ (const Nothing) (traceShowId $ blockit c)
     , quoteType = undefined
     , quoteDec  = undefined
     }
+
+blockit :: [Block A0] -> Block A0
+blockit bs = getblock $ LFT.transform transformations90 p0
+  where p0 = ProgramFile (MetaInfo {miVersion = Fortran90, miFilename = ""})
+             [PUMain () (SrcSpan initPosition initPosition) Nothing (Prelude.reverse bs) Nothing]
+        getblock (ProgramFile _ [PUMain _ _ _ [b] _]) = trace "got a block!!!" b
+        getblock _ = trace "nah" undefined
 
 {-
 
