@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b2415e655756cae9b72a7309e3b002b6d562b423f1554d4f859aa345d2b8f11b
+-- hash: 82865a74eccdd72b7c319d6ad48525dba412b6ba3099622394460f418d6f0dfd
 
 name:           sloth
 version:        0.1.0.0
@@ -30,6 +30,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , bytestring
     , containers
     , fortran-src
     , mtl
@@ -49,6 +50,9 @@ executable sloth-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , fortran-src
+    , pretty
     , sloth
   other-modules:
       Paths_sloth
