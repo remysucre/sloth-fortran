@@ -10,6 +10,6 @@ import FQQ
 
 testj :: ProgramFile A0 -> [Block A0]
 testj p = [r | r@[fortran| do c=1,number_of_chunks
-      call ideal_gas(c,.true.)
-      enddo
-      |] <- universeBi p]
+      wildsloth
+    enddo
+ |] <- universeBi p]
