@@ -5,7 +5,8 @@ import Language.Fortran.PrettyPrint
 import Language.Fortran.AST
 import Language.Fortran.ParserMonad
 import Language.Fortran.Parser.Fortran90
-import qualified Data.ByteString as BS
+import Language.Fortran.Lexer.FreeForm
+import qualified Data.ByteString.Char8 as BS
 import System.Environment
 import Debug.Trace
 
@@ -22,3 +23,8 @@ main = do
       ms = concatMap ((++ "haha \n") . prettyPrint) $ res
       out = fn ++ "\n" ++ ms ++ "matches" ++ (show $ length res) ++ "\n"
   if length res > 0 then putStr out else return ()
+  -- let lexres = collectFreeTokens Fortran90 loop
+  -- print lexres
+
+loop :: BS.ByteString
+loop = BS.pack "do mildsloth\n wildsloth\n enddo\n"

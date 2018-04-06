@@ -25,13 +25,13 @@ fortran = QuasiQuoter {
         let c = case runParse blocksParser (initParseState (pack str) Fortran90 "")
                 of ParseOk r _ -> r
                    ParseFailed e -> trace (show e) $ undefined
-        in dataToPatQ (const Nothing `extQ` noSrc `extQ` antiStmt) (traceShowId $ blockit c)
+        in dataToPatQ (const Nothing `extQ` noSrc `extQ` antiDS `extQ` antiStmt) (traceShowId $ blockit c)
     , quoteType = undefined
     , quoteDec  = undefined
     }
 
 blockit :: [Block A0] -> Block A0
-blockit bs = getblock $ LFT.transform transformations90 p0
+blockit bs = trace (show bs) . getblock $ LFT.transform transformations90 p0
   where p0 = ProgramFile (MetaInfo {miVersion = Fortran90, miFilename = ""})
              [PUMain () (SrcSpan initPosition initPosition) Nothing (Prelude.reverse bs) Nothing]
         getblock (ProgramFile _ [PUMain _ _ _ [b] _]) = trace "got a block!!!" b
@@ -39,6 +39,10 @@ blockit bs = getblock $ LFT.transform transformations90 p0
 
 noSrc :: Language.Fortran.Util.Position.SrcSpan -> Maybe (Q Language.Haskell.TH.Pat)
 noSrc _ = Just $ wildP
+
+antiDS :: DoSpecification A0 -> Maybe (Q Language.Haskell.TH.Pat)
+antiDS (MetaDS _ _) = Just $ wildP
+antiDS _ = Nothing
 
 antiStmt :: Statement A0 -> Maybe (Q Language.Haskell.TH.Pat)
 antiStmt (MetaStmt _ _) = Just $ wildP
