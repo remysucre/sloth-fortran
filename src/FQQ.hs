@@ -25,7 +25,7 @@ fortran = QuasiQuoter {
         let c = case runParse blocksParser (initParseState (pack str) Fortran90 "")
                 of ParseOk r _ -> r
                    ParseFailed e -> trace (show e) $ undefined
-        in dataToPatQ (const Nothing `extQ` noSrc) (traceShowId $ blockit c)
+        in dataToPatQ (const Nothing `extQ` noSrc `extQ` antiStmt) (traceShowId $ blockit c)
     , quoteType = undefined
     , quoteDec  = undefined
     }
@@ -39,6 +39,10 @@ blockit bs = getblock $ LFT.transform transformations90 p0
 
 noSrc :: Language.Fortran.Util.Position.SrcSpan -> Maybe (Q Language.Haskell.TH.Pat)
 noSrc _ = Just $ wildP
+
+antiStmt :: Statement A0 -> Maybe (Q Language.Haskell.TH.Pat)
+antiStmt (MetaStmt _ _) = Just $ wildP
+antiStmt _ = Nothing
 
 {-
 
