@@ -23,6 +23,7 @@ main = do
       ms = concatMap ((++ "haha \n") . prettyPrint) $ res
       out = fn ++ "\n" ++ ms ++ "matches" ++ (show $ length res) ++ "\n"
   if length res > 0 then putStr out else return ()
+  print fortran
   -- let lexres = collectFreeTokens Fortran90 loop
   -- print lexres
 
