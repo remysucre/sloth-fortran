@@ -25,10 +25,13 @@ fortran = QuasiQuoter {
         let c = case runParse blocksParser (initParseState (pack str) Fortran90 "")
                 of ParseOk r _ -> r
                    ParseFailed e -> trace (show e) $ undefined
-        in dataToPatQ (const Nothing `extQ` noSrc `extQ` antiDS `extQ` antiStmt `extQ` antiBlock) (traceShowId $ blockit c)
+        in dataToPatQ (const Nothing `extQ` noSrc `extQ` antiDS `extQ` antiStmt `extQ` antiBlock `extQ` noSpan) (traceShowId $ blockit c)
     , quoteType = undefined
     , quoteDec  = undefined
     }
+
+noSpan :: SrcSpan -> Maybe (Q Language.Haskell.TH.Pat)
+noSpan _ = Just wildP
 
 blockit :: [Block A0] -> Block A0
 blockit bs = trace (show bs) . getblock $ LFT.transform transformations90 p0
@@ -49,6 +52,7 @@ antiBlock (BlStatement _ _ Nothing (MetaStmt _ _) ) = Just $ wildP
 antiBlock (BlDo _ _ _ _ _ ds [BlStatement _ _ Nothing (MetaStmt _ _)] Nothing) =
   Just [p|(BlDo _ _ _ _ _ $(dsp) _ Nothing)|]
   where dsp = dataToPatQ (const Nothing `extQ` noSrc `extQ` antiDS `extQ` antiStmt `extQ` antiBlock) ds
+antiBlock (BlComment () _ (Comment "lazysloth")) = Just [p|(BlComment () _ (Comment "lazysloth"))|]
 antiBlock _ = Nothing
 
 antiStmt :: Statement A0 -> Maybe (Q Language.Haskell.TH.Pat)
