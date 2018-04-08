@@ -6,7 +6,7 @@ SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 
 N=4
-for j in $( find $1 -name *.f90.out ); do
+for j in $( find $1 -name *.f90 ); do
   ((i=i%N)); ((i++==0)) && wait
   stack exec sloth-exe "$j" &
 done
