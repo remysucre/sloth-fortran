@@ -46,6 +46,9 @@ antiDS _ = Nothing
 
 antiBlock :: Block A0 -> Maybe (Q Language.Haskell.TH.Pat)
 antiBlock (BlStatement _ _ Nothing (MetaStmt _ _) ) = Just $ wildP
+antiBlock (BlDo _ _ _ _ _ ds [BlStatement _ _ Nothing (MetaStmt _ _)] Nothing) =
+  Just [p|(BlDo _ _ _ _ _ $(dsp) _ Nothing)|]
+  where dsp = dataToPatQ (const Nothing `extQ` noSrc `extQ` antiDS `extQ` antiStmt `extQ` antiBlock) ds
 antiBlock _ = Nothing
 
 antiStmt :: Statement A0 -> Maybe (Q Language.Haskell.TH.Pat)

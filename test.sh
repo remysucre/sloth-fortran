@@ -6,9 +6,8 @@ SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 
 N=4
-for j in $( find $1 -name *.f90.out ); do
-  ((i=i%N)); ((i++==0)) && wait
-  stack exec sloth-exe "$j" &
+for j in $( find $1 -name *.java ); do
+  echo "$j"; stack exec joogle-exe "$j" | grep -o haha ; stack exec joogle-exe "$j" | grep -o labeled
 done
 
 IFS=$SAVEIFS
