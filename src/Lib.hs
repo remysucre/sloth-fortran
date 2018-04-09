@@ -11,14 +11,15 @@ import Data.Generics.Uniplate.Data
 import FQQ
 
 testj :: ProgramFile A0 -> [Block A0]
-testj p = [r | (r, c) <- contextsBi p, pat r && array r && pctxt (c smark)]
+testj p = [r | (r, c) <- contextsBi p, pat r && lhs r && pctxt (c smark)]
   where
         pat [fortran| do mildsloth
                          wildsloth
                       enddo
                     |] = True
         pat _ = False
-        array x = [ i::Index () | i <- universeBi x, index i] == []
+        lhs x = [ r | r@(StExpressionAssign () _ l _) <- universeBi x, array l] == []
+        array x = [ i::Index () | i <- universeBi x, index i] /= []
         index (IxSingle () _ Nothing (ExpValue () _ (ValVariable _))) = False
         index _ = True
         pctxt n = [ x | x <- [c::Block A0 | c@[fortran| do mildsloth
