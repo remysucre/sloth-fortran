@@ -1,5 +1,11 @@
-matches2
-/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel/pack_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//viscosity_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//update_halo_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//field_summary_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//calc_dt_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//revert_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//generate_chunk_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//pack_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//pack_kernel.f90
       do k = (y_min - depth), ((y_max + y_inc) + depth)
         do j = 1, depth
           index = (j + (((k + depth) - 1) * depth))
@@ -29,7 +35,10 @@ haha
       end do
 haha 
 matches4
-/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel/ideal_gas_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//advec_cell_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//accelerate_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//ideal_gas_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//ideal_gas_kernel.f90
       do k = y_min, y_max
         do j = x_min, x_max
           v = (1.0_8 / density(j, k))
@@ -42,7 +51,9 @@ matches4
       end do
 haha 
 matches1
-/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel/PdV_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//flux_calc_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//PdV_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//PdV_kernel.f90
       do k = y_min, y_max
         do j = x_min, x_max
           left_flux = ((((xarea(j, k) * (((xvel0(j, k) + xvel0(j, (k + 1))) + xvel0(j, k)) + xvel0(j, (k + 1)))) * 0.25_8) * dt) * 0.5)
@@ -76,3 +87,6 @@ haha
       end do
 haha 
 matches2
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//advec_mom_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//reset_field_kernel.f90
+/Users/remywang/metalift/txl/stng/stng_labeled_cloverleaf/stencil/kernel//initialise_chunk_kernel.f90
